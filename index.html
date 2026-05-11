@@ -398,6 +398,14 @@ body{max-width:680px;margin:0 auto;padding:20px 16px 60px}
 </div>
 
 <script>
+// ── INIT ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  ['progressOverlay','errorOverlay'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.classList.add('hidden');
+  });
+});
+
 // ── STATE ─────────────────────────────────────────────────────────
 const S = {
   url:'', type:'video', vq:'720', aq:'320', fmt:'mp4',
@@ -434,7 +442,7 @@ async function onUrl(){
 }
 async function pasteClip(){
   try{const t=await navigator.clipboard.readText();$('urlInput').value=t;await onUrl();}
-  catch{showErr('Нажми Ctrl+V, чтобы вставить ссылку вручную!');}
+  catch{$('urlInput').focus();$('urlInput').placeholder='Нажми Ctrl+V чтобы вставить...';}
 }
 
 // ── VIDEO INFO ─────────────────────────────────────────────────────
