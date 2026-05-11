@@ -1,3 +1,5 @@
+import ytdl from '@distube/ytdl-core';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -8,64 +10,41 @@ export default async function handler(req, res) {
   const { url, videoQuality, downloadMode } = req.body || {};
   if (!url) return res.status(400).json({ error: 'no url' });
 
-  const videoId = extractVideoId(url);
-  if (!videoId) return res.status(400).json({ error: 'invalid youtube url' });
+  try {
+    const info = await ytdl.getInfo(url);
+    const title = info.videoDetails.title;
 
-  // Try multiple Invidious instances (public, free, no auth)
-  const instances = [
-    'https://inv.nadeko.net',
-    'https://invidious.nerdvpn.de',
-    'https://yewtu.be',
-    'https://invidious.privacydev.net',
-    'https://iv.melmac.space',
-  ];
+    if (downloadMode === 'audio') {
+      const formats = ytdl.filterFormats(info.formats, 'audioonly');
+      const best = formats.sort((a, b) => (b.audioBitrate || 0) - (a.audioBitrate || 0))[0];
+      if (!best) return res.status(404).json({ error: 'Аудио поток не найден' });
+      return res.json({ status: 'redirect', url: best.url, ext: best.container || 'm4a', title });
+    }
 
-  let data = null;
-  let usedInstance = null;
-  for (const inst of instances) {
-    try {
-      const r = await fetch(`${inst}/api/v1/videos/${videoId}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' },
-        signal: AbortSignal.timeout(6000),
-      });
-      if (r.ok) { data = await r.json(); usedInstance = inst; break; }
-    } catch { continue; }
+    // Video — try combined (audio+video in one file) first
+    const combined = ytdl.filterFormats(info.formats, 'videoandaudio')
+      .sort((a, b) => (b.height || 0) - (a.height || 0));
+
+    const q = parseInt(videoQuality) || 720;
+    const match = combined.find(f => f.height <= q) || combined[combined.length - 1];
+
+    if (match) {
+      return res.json({ status: 'redirect', url: match.url, ext: match.container || 'mp4', quality: match.qualityLabel, title });
+    }
+
+    // Fallback: separate streams (needs client-side merge)
+    const videoFmt = ytdl.filterFormats(info.formats, 'videoonly')
+      .filter(f => f.height <= q)
+      .sort((a, b) => (b.height || 0) - (a.height || 0))[0];
+    const audioFmt = ytdl.filterFormats(info.formats, 'audioonly')
+      .sort((a, b) => (b.audioBitrate || 0) - (a.audioBitrate || 0))[0];
+
+    if (videoFmt && audioFmt) {
+      return res.json({ status: 'multi', videoUrl: videoFmt.url, audioUrl: audioFmt.url, ext: 'mp4', quality: videoFmt.qualityLabel, title });
+    }
+
+    return res.status(404).json({ error: 'Формат не найден' });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
   }
-
-  if (!data) return res.status(500).json({ error: 'Не удалось получить данные видео. Попробуй позже!' });
-
-  if (downloadMode === 'audio') {
-    // Best audio stream (m4a preferred, then webm/opus)
-    const streams = (data.adaptiveFormats || []).filter(f => f.type?.startsWith('audio'));
-    const m4a = streams.find(f => f.type?.includes('mp4'));
-    const best = m4a || streams.sort((a,b) => (b.bitrate||0)-(a.bitrate||0))[0];
-    if (!best) return res.status(404).json({ error: 'Аудио поток не найден' });
-    const streamUrl = best.url.startsWith('http') ? best.url : usedInstance + best.url;
-    return res.json({ status: 'redirect', url: streamUrl, ext: 'mp4', mimeType: 'audio/mp4' });
-  } else {
-    // Combined video+audio streams (formatStreams)
-    const combined = data.formatStreams || [];
-    const q = videoQuality || '360';
-    let stream = combined.find(f => f.qualityLabel?.startsWith(q))
-      || combined.find(f => f.qualityLabel?.startsWith('720'))
-      || combined.find(f => f.qualityLabel?.startsWith('360'))
-      || combined[0];
-    if (!stream) return res.status(404).json({ error: 'Видео поток не найден' });
-    const streamUrl = stream.url.startsWith('http') ? stream.url : usedInstance + stream.url;
-    return res.json({ status: 'redirect', url: streamUrl, ext: 'mp4', mimeType: 'video/mp4', quality: stream.qualityLabel });
-  }
-}
-
-function extractVideoId(url) {
-  const patterns = [
-    /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-  ];
-  for (const p of patterns) {
-    const m = url.match(p);
-    if (m) return m[1];
-  }
-  return null;
 }
