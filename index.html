@@ -546,14 +546,15 @@ async function getCobaltUrl(){
     downloadMode:isAudio?'audio':'auto',
     filenamePattern:'basic',
   };
-  const r=await fetch('https://api.cobalt.tools/',{
+  const r=await fetch('/api/download',{
     method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify(body)
   });
-  if(!r.ok)throw new Error('cobalt error '+r.status);
+  if(!r.ok)throw new Error('proxy error '+r.status);
   const d=await r.json();
-  if(d.status==='error'||!d.url)throw new Error('cobalt:'+JSON.stringify(d));
+  if(d.error||d.status==='error')throw new Error(d.error||JSON.stringify(d));
+  if(!d.url)throw new Error('no url');
   return d.url;
 }
 
