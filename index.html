@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Папа & Доча Cooperation 🌊</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0891B2;--teal-light:#0E7490;--teal-bg:#E0F7FA;--teal-pale:#F0FDFF;
+  --ocean:#164E63;--wave:#BAE6FD;--white:#fff;
+  --text:#0F172A;--muted:#475569;--hint:#64748B;
+  --ok:#16A34A;--warn:#D97706;--err:#DC2626;
+  --radius:16px;--radius-sm:10px;--shadow:0 4px 24px rgba(8,145,178,.10);
+}
+html{font-family:'Nunito',sans-serif;font-size:18px;background:linear-gradient(160deg,#E0F7FA 0%,#BAE6FD 40%,#E0F2FE 100%);min-height:100vh;color:var(--text)}
+body{max-width:680px;margin:0 auto;padding:20px 16px 60px}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-wave{font-size:36px;animation:wave 2.5s ease-in-out infinite;display:inline-block;transform-origin:70% 70%}
+@keyframes wave{0%,100%{transform:rotate(0)}20%{transform:rotate(20deg)}40%{transform:rotate(-8deg)}60%{transform:rotate(14deg)}80%{transform:rotate(-4deg)}}
+.logo-text{line-height:1.1}
+.logo-title{font-size:1.15rem;font-weight:900;color:var(--ocean)}
+.logo-sub{font-size:.72rem;font-weight:700;color:var(--teal);letter-spacing:.04em}
+.history-btn{background:var(--white);border:2px solid var(--wave);border-radius:40px;padding:8px 18px;font-size:.9rem;font-weight:700;color:var(--teal-light);cursor:pointer;transition:.2s;font-family:'Nunito',sans-serif}
+.history-btn:hover{background:var(--teal-bg);border-color:var(--teal)}
+
+/* CARDS */
+.card{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-radius:var(--radius);border:1.5px solid rgba(8,145,178,.13);box-shadow:var(--shadow);padding:24px;margin-bottom:14px}
+
+/* GREETING */
+.greeting{text-align:center;padding:28px 24px}
+.hi{font-size:2.2rem;font-weight:900;color:var(--ocean);margin-bottom:6px}
+.hi-sub{font-size:1.1rem;font-weight:600;color:var(--muted)}
+
+/* STEP BADGE */
+.step-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.badge{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--ocean));color:white;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0}
+.badge.grey{background:linear-gradient(135deg,#94A3B8,#64748B)}
+.step-title{font-size:1.2rem;font-weight:800;color:var(--text)}
+.step-sub{font-size:.82rem;font-weight:600;color:var(--hint);margin-top:1px}
+
+/* HINT BOX */
+.hint{background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:var(--radius-sm);padding:12px 16px;font-size:.88rem;font-weight:600;color:#92400E;margin-bottom:14px;line-height:1.5}
+.hint b{color:#78350F}
+
+/* URL INPUT */
+.url-row{display:flex;gap:8px}
+.url-input{flex:1;border:2.5px solid var(--wave);border-radius:var(--radius-sm);padding:14px 18px;font-size:1rem;font-family:'Nunito',sans-serif;outline:none;transition:.2s;background:white;color:var(--text)}
+.url-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(8,145,178,.15)}
+.paste-btn{background:white;border:2.5px solid var(--wave);border-radius:var(--radius-sm);padding:14px 16px;font-size:1.3rem;cursor:pointer;transition:.2s;color:var(--teal)}
+.paste-btn:hover{background:var(--teal-bg);border-color:var(--teal)}
+.url-err{color:var(--err);font-size:.85rem;font-weight:700;margin-top:6px;display:none}
+
+/* VIDEO PREVIEW */
+.preview-row{display:flex;gap:14px;align-items:flex-start}
+.thumb{width:120px;height:72px;object-fit:cover;border-radius:10px;flex-shrink:0;border:2px solid var(--wave)}
+.preview-info{flex:1}
+.preview-title{font-size:1rem;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:4px}
+.preview-channel{font-size:.85rem;font-weight:600;color:var(--teal)}
+.ok-badge{display:inline-block;background:#DCFCE7;color:#166534;border-radius:20px;padding:4px 12px;font-size:.8rem;font-weight:700;margin-top:6px}
+
+/* OPTIONS GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.opt-btn{border:2.5px solid #BAE6FD;border-radius:var(--radius);padding:14px 10px;font-size:.95rem;font-weight:700;cursor:pointer;transition:.2s;background:white;color:var(--teal-light);text-align:left;font-family:'Nunito',sans-serif}
+.opt-btn .icon{font-size:1.8rem;margin-bottom:4px;display:block}
+.opt-btn .label{font-size:1rem;font-weight:800;display:block;color:var(--text)}
+.opt-btn .sub{font-size:.78rem;font-weight:600;color:var(--hint);display:block;margin-top:2px}
+.opt-btn:hover{background:var(--teal-bg);border-color:var(--teal)}
+.opt-btn.sel{background:linear-gradient(135deg,var(--teal),var(--ocean));border-color:var(--ocean);color:white;transform:scale(1.03)}
+.opt-btn.sel .label,.opt-btn.sel .sub{color:white}
+.opt-btn.sel .sub{opacity:.8}
+
+/* FORMATS (small) */
+.fmt-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.fmt-btn{border:2px solid #BAE6FD;border-radius:30px;padding:7px 16px;font-size:.88rem;font-weight:700;cursor:pointer;transition:.2s;background:white;color:var(--teal-light);font-family:'Nunito',sans-serif}
+.fmt-btn:hover{background:var(--teal-bg)}
+.fmt-btn.sel{background:var(--teal);border-color:var(--teal);color:white}
+
+/* TIME RANGE */
+.collapsible-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;width:100%}
+.collapsible-header:hover .step-title{color:var(--teal)}
+.collapse-icon{font-size:1.2rem;color:var(--hint);transition:.2s}
+.collapsed .collapse-icon{transform:rotate(-90deg)}
+.collapsible-body{margin-top:14px}
+.time-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.time-group{text-align:center}
+.time-label{font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.time-inp{border:2px solid #BAE6FD;border-radius:var(--radius-sm);padding:10px 12px;font-size:1rem;width:100px;text-align:center;font-family:'Nunito',sans-serif;outline:none;transition:.2s}
+.time-inp:focus{border-color:var(--teal)}
+.time-arrow{font-size:1.4rem;color:var(--hint);padding-top:18px}
+
+/* FILE NAME */
+.filename-inp{border:2.5px solid var(--wave);border-radius:var(--radius-sm);padding:13px 16px;font-size:1rem;font-family:'Nunito',sans-serif;outline:none;transition:.2s;background:white;color:var(--text);width:100%}
+.filename-inp:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(8,145,178,.12)}
+
+/* DOWNLOAD BUTTON */
+.dl-wrap{text-align:center;padding:4px 0 8px}
+.dl-btn{background:linear-gradient(135deg,var(--teal),var(--ocean));color:white;border:none;border-radius:40px;padding:18px 52px;font-size:1.35rem;font-weight:900;cursor:pointer;transition:.2s;font-family:'Nunito',sans-serif;box-shadow:0 6px 28px rgba(8,145,178,.35)}
+.dl-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(8,145,178,.45)}
+.dl-btn:active{transform:translateY(0)}
+.dl-hint{font-size:.85rem;color:var(--hint);font-weight:600;margin-top:10px}
+
+/* HIDDEN */
+.hidden{display:none}
+
+/* PROGRESS MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal{background:white;border-radius:var(--radius);padding:36px 32px;max-width:340px;width:90%;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.18)}
+.modal-icon{font-size:3.2rem;margin-bottom:12px}
+.modal-title{font-size:1.5rem;font-weight:900;color:var(--ocean);margin-bottom:6px}
+.modal-msg{font-size:.95rem;color:var(--muted);font-weight:600;margin-bottom:18px;line-height:1.5}
+.progress-bar{height:10px;background:#E0F7FA;border-radius:5px;overflow:hidden;margin-bottom:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--ocean));border-radius:5px;transition:width .4s ease}
+.progress-sub{font-size:.85rem;color:var(--hint);font-weight:700;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.modal-close{background:linear-gradient(135deg,var(--teal),var(--ocean));color:white;border:none;border-radius:30px;padding:12px 32px;font-size:1rem;font-weight:800;cursor:pointer;margin-top:12px;font-family:'Nunito',sans-serif}
+
+/* HISTORY DRAWER */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(360px,100vw);background:white;z-index:300;box-shadow:-8px 0 40px rgba(0,0,0,.15);overflow-y:auto;padding:24px;transform:translateX(100%);transition:transform .3s ease}
+.drawer.open{transform:translateX(0)}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:299;display:none}
+.drawer-backdrop.show{display:block}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.drawer-title{font-size:1.4rem;font-weight:900;color:var(--ocean)}
+.drawer-close{background:none;border:2px solid #E2E8F0;border-radius:30px;width:36px;height:36px;cursor:pointer;font-size:1.1rem;color:var(--muted)}
+.hist-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;margin-bottom:8px;background:#F8FAFC;cursor:pointer;transition:.15s}
+.hist-item:hover{background:var(--teal-bg)}
+.hist-thumb{width:56px;height:36px;object-fit:cover;border-radius:6px;flex-shrink:0}
+.hist-no-thumb{width:56px;height:36px;border-radius:6px;background:var(--wave);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.hist-info{flex:1;min-width:0}
+.hist-name{font-size:.88rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-meta{font-size:.75rem;font-weight:600;color:var(--hint)}
+.hist-replay{background:white;border:2px solid #BAE6FD;border-radius:20px;padding:5px 10px;font-size:.8rem;font-weight:700;color:var(--teal);cursor:pointer;flex-shrink:0;font-family:'Nunito',sans-serif}
+.hist-empty{text-align:center;color:var(--hint);padding:40px 0;font-weight:600}
+.clear-btn{width:100%;background:white;border:2px solid #FCA5A5;border-radius:30px;padding:10px;font-size:.9rem;font-weight:700;color:var(--err);cursor:pointer;margin-top:12px;font-family:'Nunito',sans-serif}
+.clear-btn:hover{background:#FEF2F2}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ocean);color:white;padding:14px 28px;border-radius:40px;font-size:1rem;font-weight:700;box-shadow:0 6px 28px rgba(0,0,0,.25);z-index:500;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* slide-in animation for sections */
+.slide-in{animation:slideIn .35s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* quality sub-label */
+.q-label{display:block;font-size:.75rem;font-weight:600;margin-top:2px}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <span class="logo-wave">🌊</span>
+    <div class="logo-text">
+      <div class="logo-title">Папа &amp; Доча Cooperation</div>
+      <div class="logo-sub">™ качалка видео и музыки</div>
+    </div>
+  </div>
+  <button class="history-btn" onclick="openHistory()">📚 История</button>
+</header>
+
+<!-- GREETING -->
+<div class="card greeting">
+  <div class="hi">👋 Привет, папа!</div>
+  <div class="hi-sub">Что сегодня качаем? 🎬🎵</div>
+</div>
+
+<!-- STEP 1: URL -->
+<div class="card" id="s1">
+  <div class="step-row">
+    <div class="badge">1</div>
+    <div>
+      <div class="step-title">Вставь ссылку с YouTube</div>
+      <div class="step-sub">Скопируй — и прямо сюда!</div>
+    </div>
+  </div>
+  <div class="hint">
+    💡 <b>Как скопировать ссылку:</b> открой видео → нажми <b>«Поделиться»</b> → <b>«Копировать ссылку»</b>. Готово!
+  </div>
+  <div class="url-row">
+    <input type="text" id="urlInput" class="url-input" placeholder="https://youtu.be/..." oninput="onUrl()" onpaste="later(onUrl)">
+    <button class="paste-btn" onclick="pasteClip()" title="Вставить из буфера">📋</button>
+  </div>
+  <div class="url-err" id="urlErr">⚠️ Это не ссылка YouTube. Попробуй ещё раз!</div>
+</div>
+
+<!-- STEP 2: PREVIEW (hidden) -->
+<div class="card hidden slide-in" id="s2">
+  <div class="step-row">
+    <div class="badge">2</div>
+    <div>
+      <div class="step-title">Твоё видео найдено!</div>
+    </div>
+  </div>
+  <div class="preview-row">
+    <img id="prevThumb" class="thumb" src="" alt="thumbnail">
+    <div class="preview-info">
+      <div class="preview-title" id="prevTitle"></div>
+      <div class="preview-channel" id="prevChannel"></div>
+      <div class="ok-badge">✅ Всё отлично, можно скачивать!</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: TYPE (hidden) -->
+<div class="card hidden slide-in" id="s3">
+  <div class="step-row">
+    <div class="badge">3</div>
+    <div>
+      <div class="step-title">Что скачать?</div>
+      <div class="step-sub">Видео или только музыку</div>
+    </div>
+  </div>
+  <div class="grid2">
+    <button class="opt-btn sel" id="btnVideo" onclick="setType('video')">
+      <span class="icon">🎬</span>
+      <span class="label">Видео</span>
+      <span class="sub">Смотреть на экране</span>
+    </button>
+    <button class="opt-btn" id="btnAudio" onclick="setType('audio')">
+      <span class="icon">🎵</span>
+      <span class="label">Только музыка</span>
+      <span class="sub">Слушать как песню</span>
+    </button>
+  </div>
+</div>
+
+<!-- STEP 4: QUALITY (hidden) -->
+<div class="card hidden slide-in" id="s4">
+  <div class="step-row">
+    <div class="badge">4</div>
+    <div>
+      <div class="step-title">Качество</div>
+      <div class="step-sub">Выше = лучше картинка, но больше файл</div>
+    </div>
+  </div>
+
+  <!-- VIDEO QUALITY -->
+  <div id="vQualities">
+    <div class="grid3">
+      <button class="opt-btn" id="q360" onclick="setVQ('360')">
+        <span class="icon">📱</span>
+        <span class="label">360p</span>
+        <span class="sub">Маленький файл</span>
+      </button>
+      <button class="opt-btn sel" id="q720" onclick="setVQ('720')">
+        <span class="icon">💻</span>
+        <span class="label">720p</span>
+        <span class="sub">Хорошее HD</span>
+      </button>
+      <button class="opt-btn" id="q1080" onclick="setVQ('1080')">
+        <span class="icon">🖥️</span>
+        <span class="label">1080p</span>
+        <span class="sub">Отличное Full HD</span>
+      </button>
+    </div>
+    <div class="hint" style="margin-top:12px;margin-bottom:0">
+      💡 Для телефона — <b>360p</b> хватит. Для большого телевизора бери <b>1080p</b>!
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-size:.9rem;font-weight:700;color:var(--muted);margin-bottom:8px">Формат файла:</div>
+      <div class="fmt-row" id="vFmts">
+        <button class="fmt-btn sel" id="fMp4" onclick="setFmt('mp4')">📹 MP4</button>
+        <button class="fmt-btn" id="fWebm" onclick="setFmt('webm')">🎞️ WebM</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO QUALITY -->
+  <div id="aQualities" class="hidden">
+    <div class="grid3">
+      <button class="opt-btn" id="a128" onclick="setAQ('128')">
+        <span class="icon">🔈</span>
+        <span class="label">Обычное</span>
+        <span class="sub">128 kbps</span>
+      </button>
+      <button class="opt-btn sel" id="a320" onclick="setAQ('320')">
+        <span class="icon">🔊</span>
+        <span class="label">Хорошее</span>
+        <span class="sub">320 kbps</span>
+      </button>
+      <button class="opt-btn" id="aBest" onclick="setAQ('best')">
+        <span class="icon">🎧</span>
+        <span class="label">Лучшее</span>
+        <span class="sub">Максимум</span>
+      </button>
+    </div>
+    <div class="hint" style="margin-top:12px;margin-bottom:0">
+      💡 Разницу в качестве звука слышно больше всего в наушниках. <b>320 kbps</b> — отличный выбор!
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-size:.9rem;font-weight:700;color:var(--muted);margin-bottom:8px">Формат звукового файла:</div>
+      <div class="fmt-row" id="aFmts">
+        <button class="fmt-btn sel" id="fMp3" onclick="setFmt('mp3')">🎵 MP3</button>
+        <button class="fmt-btn" id="fM4a" onclick="setFmt('m4a')">🍎 M4A</button>
+        <button class="fmt-btn" id="fWav" onclick="setFmt('wav')">🔉 WAV</button>
+        <button class="fmt-btn" id="fOgg" onclick="setFmt('ogg')">🎶 OGG</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 5: TIME RANGE (collapsible, hidden) -->
+<div class="card hidden slide-in" id="s5">
+  <button class="collapsible-header collapsed" id="timeHeader" onclick="toggleTime()">
+    <div class="step-row" style="margin-bottom:0">
+      <div class="badge grey">5</div>
+      <div>
+        <div class="step-title">✂️ Обрезать? <span style="font-weight:600;color:var(--hint);font-size:.88rem">(не обязательно)</span></div>
+        <div class="step-sub">Хочешь только кусочек? Здесь укажи!</div>
+      </div>
+    </div>
+    <div class="collapse-icon">▼</div>
+  </button>
+  <div class="collapsible-body hidden" id="timeBody">
+    <div class="hint">
+      💡 Пиши время в формате <b>минуты:секунды</b>. Например, <b>1:30</b> — это полторы минуты от начала.<br>
+      Оставь пустым — скачается <b>всё видео целиком</b>!
+    </div>
+    <div class="time-row">
+      <div class="time-group">
+        <div class="time-label">🟢 С секунды:</div>
+        <input type="text" id="tStart" class="time-inp" placeholder="0:00">
+      </div>
+      <div class="time-arrow">→</div>
+      <div class="time-group">
+        <div class="time-label">🔴 До секунды:</div>
+        <input type="text" id="tEnd" class="time-inp" placeholder="конец">
+      </div>
+    </div>
+    <div class="hint" style="margin-top:12px;margin-bottom:0;background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF">
+      ℹ️ При обрезке файл сначала скачивается, потом нарезается прямо в браузере. Может занять пару минут.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 6: FILE NAME (hidden) -->
+<div class="card hidden slide-in" id="s6">
+  <div class="step-row">
+    <div class="badge grey">6</div>
+    <div>
+      <div class="step-title">📝 Название файла</div>
+      <div class="step-sub">Можешь оставить как есть или переименовать</div>
+    </div>
+  </div>
+  <input type="text" id="fileName" class="filename-inp" placeholder="Название...">
+  <div style="font-size:.82rem;color:var(--hint);font-weight:600;margin-top:8px">
+    💾 Расширение (.mp4, .mp3 и т.д.) добавится автоматически
+  </div>
+</div>
+
+<!-- DOWNLOAD BUTTON (hidden) -->
+<div class="card hidden slide-in dl-wrap" id="s7">
+  <button class="dl-btn" onclick="doDownload()">⬇️ Скачать!</button>
+  <div class="dl-hint">Нажми — и файл появится в папке «Загрузки» 📂<br>
+  <span style="font-size:.8rem">Возможно, браузер спросит куда сохранить — это нормально!</span>
+  </div>
+</div>
+
+<!-- PROGRESS OVERLAY -->
+<div class="overlay hidden" id="progressOverlay">
+  <div class="modal">
+    <div class="modal-icon" id="pIcon">⬇️</div>
+    <div class="modal-title" id="pTitle">Скачиваем...</div>
+    <div class="modal-msg" id="pMsg">Пожалуйста, подожди немного 😊</div>
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:10%"></div></div>
+    <div class="progress-sub" id="pSub">Подключаемся...</div>
+  </div>
+</div>
+
+<!-- ERROR OVERLAY -->
+<div class="overlay hidden" id="errorOverlay">
+  <div class="modal">
+    <div class="modal-icon">😔</div>
+    <div class="modal-title">Что-то пошло не так</div>
+    <div class="modal-msg" id="errMsg"></div>
+    <button class="modal-close" onclick="hideEl('errorOverlay')">Попробовать снова</button>
+  </div>
+</div>
+
+<!-- HISTORY DRAWER -->
+<div class="drawer-backdrop" id="backdrop" onclick="closeHistory()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-title">📚 История загрузок</div>
+    <button class="drawer-close" onclick="closeHistory()">✕</button>
+  </div>
+  <div id="histList"></div>
+  <button class="clear-btn" onclick="clearHist()">🗑️ Очистить историю</button>
+</div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────────
+const S = {
+  url:'', type:'video', vq:'720', aq:'320', fmt:'mp4',
+  title:'', thumb:'', channel:'', fileName:''
+};
+
+// ── UTILS ──────────────────────────────────────────────────────────
+const $=id=>document.getElementById(id);
+const showEl=id=>$(id).classList.remove('hidden');
+const hideEl=id=>$(id).classList.add('hidden');
+const later=(fn,ms=80)=>setTimeout(fn,ms);
+function sanitize(s){return(s||'').replace(/[<>:"/\\|?*\x00-\x1F]/g,'').trim().slice(0,120)||'video'}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function toSec(s){
+  if(!s||!s.trim())return null;
+  const p=s.split(':').map(Number);
+  if(p.length===2)return p[0]*60+p[1];
+  if(p.length===3)return p[0]*3600+p[1]*60+p[2];
+  return parseFloat(s)||null;
+}
+
+// ── URL HANDLING ───────────────────────────────────────────────────
+function isYT(url){
+  return /(?:youtube\.com\/(?:watch\?.*v=|shorts\/|embed\/)|youtu\.be\/)[\w\-]+/.test(url);
+}
+async function onUrl(){
+  const v=$('urlInput').value.trim();
+  $('urlErr').style.display='none';
+  if(!v){['s2','s3','s4','s5','s6','s7'].forEach(hideEl);return}
+  if(!isYT(v)){$('urlErr').style.display='block';['s2','s3','s4','s5','s6','s7'].forEach(hideEl);return}
+  S.url=v;
+  await loadInfo(v);
+}
+async function pasteClip(){
+  try{const t=await navigator.clipboard.readText();$('urlInput').value=t;await onUrl();}
+  catch{showErr('Нажми Ctrl+V, чтобы вставить ссылку вручную!');}
+}
+
+// ── VIDEO INFO ─────────────────────────────────────────────────────
+async function loadInfo(url){
+  try{
+    const r=await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
+    if(!r.ok)throw 0;
+    const d=await r.json();
+    S.title=d.title;S.thumb=d.thumbnail_url;S.channel=d.author_name;
+    S.fileName=sanitize(d.title);
+    $('prevThumb').src=d.thumbnail_url;
+    $('prevTitle').textContent=d.title;
+    $('prevChannel').textContent='📺 '+d.author_name;
+    $('fileName').value=S.fileName;
+    ['s2','s3','s4','s5','s6','s7'].forEach(id=>{showEl(id);$(id).classList.add('slide-in')});
+  }catch{
+    showErr('Не получилось загрузить видео. Проверь ссылку — она должна быть из YouTube!');
+    ['s2','s3','s4','s5','s6','s7'].forEach(hideEl);
+  }
+}
+
+// ── TYPE / QUALITY / FORMAT ────────────────────────────────────────
+function setType(t){
+  S.type=t;
+  $('btnVideo').classList.toggle('sel',t==='video');
+  $('btnAudio').classList.toggle('sel',t==='audio');
+  $('vQualities').classList.toggle('hidden',t==='audio');
+  $('aQualities').classList.toggle('hidden',t==='video');
+  if(t==='video'){S.fmt='mp4';setVQ('720');setFmt('mp4');}
+  else{S.fmt='mp3';setAQ('320');setFmt('mp3');}
+}
+function setVQ(q){
+  S.vq=q;
+  ['360','720','1080'].forEach(v=>$('q'+v)&&$('q'+v).classList.toggle('sel',v===q));
+}
+function setAQ(q){
+  S.aq=q;
+  ['128','320','best'].forEach(v=>{
+    const id=v==='best'?'aBest':'a'+v;
+    $(id)&&$(id).classList.toggle('sel',v===q);
+  });
+}
+function setFmt(f){
+  S.fmt=f;
+  ['Mp4','Webm','Mp3','M4a','Wav','Ogg'].forEach(v=>{
+    const el=$('f'+v);if(el)el.classList.toggle('sel',v.toLowerCase()===f);
+  });
+}
+function toggleTime(){
+  const h=$('timeHeader'),b=$('timeBody');
+  const open=b.classList.contains('hidden');
+  b.classList.toggle('hidden',!open);
+  h.classList.toggle('collapsed',!open);
+}
+
+// ── DOWNLOAD ──────────────────────────────────────────────────────
+async function doDownload(){
+  S.fileName=sanitize($('fileName').value)||sanitize(S.title)||'video';
+  const startSec=toSec($('tStart').value);
+  const endSec=toSec($('tEnd').value);
+  const needTrim=(startSec!==null||endSec!==null);
+
+  prog('⬇️','Скачиваем...','Подключаемся к серверу...',15);
+
+  let dlUrl;
+  try{
+    dlUrl=await getCobaltUrl();
+  }catch(e){
+    hideProg();
+    showErr('Не удалось скачать это видео 😔\n\nВозможные причины:\n• Видео ограничено (18+, регион)\n• Приватное видео\n• Слишком длинное (>2 часов)\n\nПопробуй другое видео!');
+    return;
+  }
+
+  if(needTrim){
+    prog('✂️','Нарезаем...','Сначала скачаем, потом обрежем — это может занять 2–3 минуты...',40);
+    try{
+      await trimAndSave(dlUrl,startSec,endSec);
+    }catch(e){
+      hideProg();
+      showErr('Не получилось обрезать видео. Попробуй скачать целиком (без обрезки), а потом обрежь сам через любой бесплатный редактор!');
+      return;
+    }
+  }else{
+    prog('⬇️','Почти готово!','Сохраняем файл...',75);
+    await directSave(dlUrl);
+  }
+
+  prog('🎉','Готово!','Файл сохранён! Проверь папку Загрузки 📂',100);
+  await sleep(1500);
+  hideProg();
+  saveHist();
+  toast('✅ Готово! Файл сохранён в папке Загрузки 📂');
+}
+
+async function getCobaltUrl(){
+  const isAudio=S.type==='audio';
+  const body={
+    url:S.url,
+    videoQuality:S.vq,
+    audioFormat:isAudio?S.fmt:'best',
+    downloadMode:isAudio?'audio':'auto',
+    filenamePattern:'basic',
+  };
+  const r=await fetch('https://api.cobalt.tools/',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok)throw new Error('cobalt error '+r.status);
+  const d=await r.json();
+  if(d.status==='error'||!d.url)throw new Error('cobalt:'+JSON.stringify(d));
+  return d.url;
+}
+
+async function directSave(url){
+  const fname=S.fileName+'.'+S.fmt;
+  // Try File System Access API (lets user pick folder!)
+  if('showSaveFilePicker' in window){
+    try{
+      const h=await window.showSaveFilePicker({
+        suggestedName:fname,
+        types:[{description:'Медиафайл',accept:{['application/octet-stream']:['.'+ S.fmt]}}]
+      });
+      prog('⬇️','Скачиваем...','Загружаем файл... это займёт немного времени',80);
+      const res=await fetch(url);
+      const buf=await res.arrayBuffer();
+      const w=await h.createWritable();
+      await w.write(buf);
+      await w.close();
+      return;
+    }catch(e){
+      if(e.name==='AbortError')throw e;
+      // fallthrough
+    }
+  }
+  // Standard anchor download
+  const a=document.createElement('a');
+  a.href=url;a.download=fname;a.target='_blank';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+
+// ffmpeg.wasm for trimming
+let ff=null;
+async function loadFFmpeg(){
+  if(ff)return;
+  prog('⚙️','Загружаем инструмент...','Один раз — потом сразу! (~30 МБ)',45);
+  // Use legacy @ffmpeg/ffmpeg 0.11 — works without SharedArrayBuffer
+  await new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js';
+    s.onload=res;s.onerror=rej;
+    document.head.appendChild(s);
+  });
+  const {createFFmpeg,fetchFile}=window.FFmpeg;
+  ff=createFFmpeg({log:false,corePath:'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js'});
+  await ff.load();
+  window._ffetchFile=fetchFile;
+}
+
+async function trimAndSave(url,startSec,endSec){
+  await loadFFmpeg();
+  prog('⬇️','Скачиваем оригинал...','Нужно сначала полностью загрузить...',55);
+  const res=await fetch(url);
+  const blob=await res.blob();
+  const ext=S.fmt;
+  prog('✂️','Нарезаем...','Обрабатываем...',70);
+  const inName='in.'+ext,outName='out.'+ext;
+  ff.FS('writeFile',inName,await window._ffetchFile(blob));
+  const args=['-i',inName];
+  if(startSec!==null)args.push('-ss',String(startSec));
+  if(endSec!==null)args.push('-to',String(endSec));
+  args.push('-c','copy',outName);
+  await ff.run(...args);
+  const data=ff.FS('readFile',outName);
+  const outBlob=new Blob([data.buffer],{type:blob.type});
+  ff.FS('unlink',inName);ff.FS('unlink',outName);
+  prog('💾','Сохраняем..','',90);
+  await saveBlob(outBlob,S.fileName+'.'+ext);
+}
+
+async function saveBlob(blob,fname){
+  if('showSaveFilePicker' in window){
+    try{
+      const h=await window.showSaveFilePicker({suggestedName:fname,types:[{description:'Файл',accept:{'application/octet-stream':['.'+ S.fmt]}}]});
+      const w=await h.createWritable();await w.write(blob);await w.close();return;
+    }catch(e){if(e.name==='AbortError')throw e;}
+  }
+  const u=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=u;a.download=fname;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(u),8000);
+}
+
+// ── PROGRESS ───────────────────────────────────────────────────────
+function prog(icon,title,msg,pct){
+  $('pIcon').textContent=icon;$('pTitle').textContent=title;
+  $('pMsg').textContent=msg;$('pFill').style.width=pct+'%';$('pSub').textContent='';
+  showEl('progressOverlay');
+}
+function hideProg(){hideEl('progressOverlay');}
+
+// ── ERROR ──────────────────────────────────────────────────────────
+function showErr(msg){
+  hideProg();
+  $('errMsg').textContent=msg;
+  showEl('errorOverlay');
+}
+
+// ── HISTORY ───────────────────────────────────────────────────────
+function saveHist(){
+  const h=JSON.parse(localStorage.getItem('papa-hist')||'[]');
+  h.unshift({title:S.title,thumb:S.thumb,fmt:S.fmt,type:S.type,url:S.url,date:new Date().toLocaleString('ru')});
+  if(h.length>60)h.length=60;
+  localStorage.setItem('papa-hist',JSON.stringify(h));
+}
+function openHistory(){
+  renderHist();
+  $('drawer').classList.add('open');
+  $('backdrop').classList.add('show');
+}
+function closeHistory(){
+  $('drawer').classList.remove('open');
+  $('backdrop').classList.remove('show');
+}
+function clearHist(){
+  if(confirm('Очистить всю историю?')){localStorage.removeItem('papa-hist');renderHist();}
+}
+function renderHist(){
+  const h=JSON.parse(localStorage.getItem('papa-hist')||'[]');
+  if(!h.length){$('histList').innerHTML='<div class="hist-empty">Пока пусто 🌊<br><br>После первой загрузки<br>тут появится история!</div>';return;}
+  $('histList').innerHTML=h.map((item,i)=>`
+    <div class="hist-item" onclick="reloadFromHist(${i})">
+      ${item.thumb?`<img class="hist-thumb" src="${esc(item.thumb)}" alt="">`:'<div class="hist-no-thumb">🎬</div>'}
+      <div class="hist-info">
+        <div class="hist-name">${esc(item.title||'Видео')}</div>
+        <div class="hist-meta">${(item.fmt||'').toUpperCase()} · ${esc(item.date||'')}</div>
+      </div>
+      <button class="hist-replay" onclick="reloadFromHist(${i});event.stopPropagation()">↻ Снова</button>
+    </div>
+  `).join('');
+}
+function reloadFromHist(i){
+  const h=JSON.parse(localStorage.getItem('papa-hist')||'[]');
+  const item=h[i];if(!item)return;
+  $('urlInput').value=item.url;
+  closeHistory();
+  onUrl();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function toast(msg){
+  const el=document.createElement('div');
+  el.className='toast';el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),4500);
+}
+</script>
+</body>
+</html>
